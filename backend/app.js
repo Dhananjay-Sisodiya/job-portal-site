@@ -1,5 +1,5 @@
 import express from "express";
-import dbConnection  from "./database/dbConnection.js";
+import dbConnection from "./database/dbConnection.js";
 import jobRouter from "./routes/jobRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import applicationRouter from "./routes/applicationRoutes.js";
@@ -30,6 +30,11 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
+
+
+app.get("/", (req, res) => {
+  res.send("Backend is running properly!")
+})
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
