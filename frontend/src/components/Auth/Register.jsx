@@ -22,15 +22,16 @@ const Register = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://job-portal-site-n49d.onrender.com/api/v1/user/register",
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/register`,
         { name, phone, email, role, password },
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
+          withCredentials: false,
         }
       );
+
       toast.success(data.message);
       setName("");
       setEmail("");
@@ -43,8 +44,8 @@ const Register = () => {
     }
   };
 
-  if(isAuthorized){
-    return <Navigate to={'/'}/>
+  if (isAuthorized) {
+    return <Navigate to={'/'} />
   }
 
 

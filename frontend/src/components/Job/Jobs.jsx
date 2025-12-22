@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 
 const Jobs = () => {
@@ -10,15 +10,19 @@ const Jobs = () => {
   useEffect(() => {
     try {
       axios
-        .get("https://job-portal-site-n49d.onrender.com/api/v1/job/getall", {
-          withCredentials: true,
-        })
+        .get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/job/getall`,
+          {
+            withCredentials: true,
+          }
+        )
         .then((res) => {
           setJobs(res.data);
         });
     } catch (error) {
       console.log(error);
     }
+
   }, []);
   if (!isAuthorized) {
     navigateTo("/");

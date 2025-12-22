@@ -31,27 +31,27 @@ const PostJob = () => {
     }
     await axios
       .post(
-        "https://job-portal-site-n49d.onrender.com/api/v1/job/post",
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/job/post`,
         fixedSalary.length >= 4
           ? {
-              title,
-              description,
-              category,
-              country,
-              city,
-              location,
-              fixedSalary,
-            }
+            title,
+            description,
+            category,
+            country,
+            city,
+            location,
+            fixedSalary,
+          }
           : {
-              title,
-              description,
-              category,
-              country,
-              city,
-              location,
-              salaryFrom,
-              salaryTo,
-            },
+            title,
+            description,
+            category,
+            country,
+            city,
+            location,
+            salaryFrom,
+            salaryTo,
+          },
         {
           withCredentials: true,
           headers: {
@@ -59,6 +59,7 @@ const PostJob = () => {
           },
         }
       )
+
       .then((res) => {
         toast.success(res.data.message);
       })
@@ -98,7 +99,7 @@ const PostJob = () => {
                   Frontend Web Development
                 </option>
                 <option value="Business Development Executive">
-                Business Development Executive
+                  Business Development Executive
                 </option>
                 <option value="Account & Finance">Account & Finance</option>
                 <option value="Artificial Intelligence">

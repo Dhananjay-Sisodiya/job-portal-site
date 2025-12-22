@@ -12,15 +12,19 @@ const JobDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://job-portal-site-n49d.onrender.com/api/v1/job/${id}`, {
-        withCredentials: true,
-      })
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/job/${id}`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setJob(res.data.job);
       })
       .catch((error) => {
         navigateTo("/notfound");
       });
+
   }, []);
 
   if (!isAuthorized) {

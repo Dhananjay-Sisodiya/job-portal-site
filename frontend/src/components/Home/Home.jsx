@@ -10,6 +10,7 @@ import PopularCompanies from "./PopularCompanies";
 const Home = () => {
   const { isAuthorized } = useContext(Context);
   if (!isAuthorized) {
+    console.log("Not Authorized");
     return <Navigate to={"/login"} />;
   }
   return (

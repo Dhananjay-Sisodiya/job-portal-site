@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://job-portal-site-n49d.onrender.com/api/v1/user/login",
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/login`,
         { email, password, role },
         {
           headers: {
@@ -27,6 +27,7 @@ const Login = () => {
           withCredentials: true,
         }
       );
+
       toast.success(data.message);
       setEmail("");
       setPassword("");
@@ -37,8 +38,8 @@ const Login = () => {
     }
   };
 
-  if(isAuthorized){
-    return <Navigate to={'/'}/>
+  if (isAuthorized) {
+    return <Navigate to={'/'} />
   }
 
   return (
@@ -55,7 +56,7 @@ const Login = () => {
               <div>
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="">Select Role</option>
-                  
+
                   <option value="Job Seeker">Job Seeker</option>
                   <option value="Employer">Employer</option>
                 </select>

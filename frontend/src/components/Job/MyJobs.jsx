@@ -17,9 +17,10 @@ const MyJobs = () => {
     const fetchJobs = async () => {
       try {
         const { data } = await axios.get(
-          "https://job-portal-site-n49d.onrender.com/api/v1/job/getmyjobs",
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/job/getmyjobs`,
           { withCredentials: true }
         );
+
         setMyJobs(data.myJobs);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -47,7 +48,7 @@ const MyJobs = () => {
   const handleUpdateJob = async (jobId) => {
     const updatedJob = myJobs.find((job) => job._id === jobId);
     await axios
-      .put(`https://job-portal-site-n49d.onrender.com/api/v1/job/update/${jobId}`, updatedJob, {
+      .put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/job/update/${jobId}`, updatedJob, {
         withCredentials: true,
       })
       .then((res) => {
@@ -62,7 +63,7 @@ const MyJobs = () => {
   //Function For Deleting Job
   const handleDeleteJob = async (jobId) => {
     await axios
-      .delete(`https://job-portal-site-n49d.onrender.com/api/v1/job/delete/${jobId}`, {
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/api/v1/job/delete/${jobId}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -344,7 +345,7 @@ const MyJobs = () => {
             </>
           ) : (
             <p>
-              You've not posted any job or may be you deleted all of your jobs!
+              You have not posted any job or may be you deleted all of your jobs!
             </p>
           )}
         </div>
