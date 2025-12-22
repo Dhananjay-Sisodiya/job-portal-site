@@ -29,9 +29,14 @@ const Application = () => {
     }
 
     // Check file type
-    const allowedTypes = ["image/png", "image/jpeg", "image/webp"];
+    const allowedTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/webp",
+      "application/pdf",
+    ];
     if (!allowedTypes.includes(file.type)) {
-      setFileError("Please select a valid image file (PNG, JPEG, or WEBP)");
+      setFileError("Please select a valid file (PDF, PNG, JPEG, WEBP)");
       setResume(null);
       return;
     }
@@ -153,15 +158,15 @@ const Application = () => {
             >
               Upload Resume
               <p style={{ color: "red", fontSize: "12px", margin: "5px 0 0 0" }}>
-                (Supported formats: PNG, JPEG, WEBP. Max size: 2MB)
+                (Supported formats: PDF, PNG, JPEG, WEBP. Max size: 2MB)
               </p>
             </label>
             <input
               type="file"
-              accept=".png,.jpg,.jpeg,.webp"
+              accept=".pdf,.png,.jpg,.jpeg,.webp"
               onChange={handleFileChange}
-              style={{ width: "100%" }}
             />
+
             {fileError && (
               <p style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
                 {fileError}

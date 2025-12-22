@@ -11,94 +11,92 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
       new ErrorHandler("Employer not allowed to access this resource.", 400)
     );
   }
-  
-  if (!req.files || Object.keys(req.files).length === 0) {
+
+  if (!req.files || !req.files.resume) {
     return next(new ErrorHandler("Resume File Required!", 400));
   }
 
   const { resume } = req.files;
-  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+
+  // ✅ Allow image + PDF
+  const allowedFormats = [
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "application/pdf",
+  ];
+
   if (!allowedFormats.includes(resume.mimetype)) {
     return next(
-      new ErrorHandler("Invalid file type. Please upload a PNG, JPEG, or WEBP file.", 400)
+      new ErrorHandler(
+        "Invalid file type. Please upload PDF, PNG, JPEG, or WEBP file.",
+        400
+      )
     );
   }
-  
-  try {
-    const cloudinaryResponse = await cloudinary.uploader.upload(
-      resume.tempFilePath
-    );
 
-    if (!cloudinaryResponse || cloudinaryResponse.error) {
-      console.error(
-        "Cloudinary Error:",
-        cloudinaryResponse.error || "Unknown Cloudinary error"
-      );
-      return next(new ErrorHandler("Failed to upload Resume to Cloudinary", 500));
+  // ✅ Max file size: 2MB
+  if (resume.size > 2 * 1024 * 1024) {
+    return next(
+      new ErrorHandler("Resume size should be less than 2MB.", 400)
+    );
+  }
+
+  // ✅ Upload to Cloudinary (PDF + Image safe)
+  const cloudinaryResponse = await cloudinary.uploader.upload(
+    resume.tempFilePath,
+    {
+      folder: "resumes",
+      resource_type: "auto", // 🔥 IMPORTANT
     }
-    
-    const { name, email, coverLetter, phone, address, jobId } = req.body;
-    const applicantID = {
+  );
+
+  if (!cloudinaryResponse || cloudinaryResponse.error) {
+    return next(
+      new ErrorHandler("Failed to upload Resume to Cloudinary", 500)
+    );
+  }
+
+  const { name, email, coverLetter, phone, address, jobId } = req.body;
+
+  if (!jobId) {
+    return next(new ErrorHandler("Job not found!", 404));
+  }
+
+  const jobDetails = await Job.findById(jobId);
+  if (!jobDetails) {
+    return next(new ErrorHandler("Job not found!", 404));
+  }
+
+  if (!name || !email || !coverLetter || !phone || !address) {
+    return next(new ErrorHandler("Please fill all fields.", 400));
+  }
+
+  const application = await Application.create({
+    name,
+    email,
+    coverLetter,
+    phone,
+    address,
+    applicantID: {
       user: req.user._id,
       role: "Job Seeker",
-    };
-    
-    if (!jobId) {
-      return next(new ErrorHandler("Job not found!", 404));
-    }
-    
-    const jobDetails = await Job.findById(jobId);
-    if (!jobDetails) {
-      return next(new ErrorHandler("Job not found!", 404));
-    }
-
-    const employerID = {
+    },
+    employerID: {
       user: jobDetails.postedBy,
       role: "Employer",
-    };
-    
-    if (
-      !name ||
-      !email ||
-      !coverLetter ||
-      !phone ||
-      !address ||
-      !applicantID ||
-      !employerID ||
-      !resume
-    ) {
-      return next(new ErrorHandler("Please fill all fields.", 400));
-    }
-    
-    const application = await Application.create({
-      name,
-      email,
-      coverLetter,
-      phone,
-      address,
-      applicantID,
-      employerID,
-      resume: {
-        public_id: cloudinaryResponse.public_id,
-        url: cloudinaryResponse.secure_url,
-      },
-    });
-    
-    res.status(200).json({
-      success: true,
-      message: "Application Submitted!",
-      application,
-    });
-  } catch (error) {
-    // Handle Cloudinary specific errors
-    if (error.message && error.message.includes("api_key")) {
-      console.error("Cloudinary API key error:", error.message);
-      return next(new ErrorHandler("File upload service configuration error", 500));
-    }
-    
-    // Handle any other errors
-    return next(error);
-  }
+    },
+    resume: {
+      public_id: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.secure_url,
+    },
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Application Submitted!",
+    application,
+  });
 });
 
 export const employerGetAllApplications = catchAsyncErrors(
