@@ -16,7 +16,7 @@ const Navbar = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/v1/user/logout`,
         {
-          withCredentials: true,
+          withCredentials: false,
         }
       );
       toast.success(response.data.message);
