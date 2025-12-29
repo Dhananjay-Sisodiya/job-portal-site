@@ -38,9 +38,9 @@ const MyApplications = () => {
     };
 
     fetchApplications();
-  }, [user]);
+  }, []);
 
-  if (!user) return null;
+  
 
   const deleteApplication = async (id) => {
     try {
@@ -64,6 +64,10 @@ const MyApplications = () => {
     setModalOpen(false);
     setResumeUrl("");
   };
+
+  useEffect(() => {
+    if (!user) return;
+  })
 
   return (
     <section className="my_applications page">
