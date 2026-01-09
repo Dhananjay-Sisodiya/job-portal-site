@@ -90,6 +90,7 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
       public_id: cloudinaryResponse.public_id,
       url: cloudinaryResponse.secure_url,
     },
+    status: "Pending",
   });
 
   res.status(200).json({
@@ -150,6 +151,46 @@ export const jobseekerDeleteApplication = catchAsyncErrors(
     res.status(200).json({
       success: true,
       message: "Application Deleted!",
+    });
+  }
+);
+
+export const employerUpdateApplicationStatus = catchAsyncErrors(
+  async (req, res, next) => {
+    const { role, _id: employerId } = req.user;
+    if (role === "Job Seeker") {
+      return next(
+        new ErrorHandler("Job Seeker not allowed to access this resource.", 400)
+      );
+    }
+
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const allowed = ["Accepted", "Rejected", "Pending"];
+    if (!allowed.includes(status)) {
+      return next(new ErrorHandler("Invalid status value", 400));
+    }
+
+    const application = await Application.findById(id);
+    if (!application) {
+      return next(new ErrorHandler("Application not found!", 404));
+    }
+
+    // Ensure only the employer assigned to this application can update it
+    if (String(application.employerID.user) !== String(employerId)) {
+      return next(new ErrorHandler("Not authorized to update this application", 403));
+    }
+
+    application.status = status;
+    application.decisionAt = status === "Pending" ? undefined : new Date();
+    application.decidedBy = status === "Pending" ? undefined : employerId;
+    await application.save();
+
+    res.status(200).json({
+      success: true,
+      message: `Application ${status.toLowerCase()} successfully`,
+      application,
     });
   }
 );

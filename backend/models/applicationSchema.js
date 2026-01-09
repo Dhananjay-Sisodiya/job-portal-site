@@ -59,6 +59,18 @@ const applicationSchema = new mongoose.Schema({
       required: true,
     },
   },
+  status: {
+    type: String,
+    enum: ["Pending", "Accepted", "Rejected"],
+    default: "Pending",
+  },
+  decisionAt: {
+    type: Date,
+  },
+  decidedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 export const Application = mongoose.model("Application", applicationSchema);

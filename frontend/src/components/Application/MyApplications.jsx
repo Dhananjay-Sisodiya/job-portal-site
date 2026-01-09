@@ -38,7 +38,7 @@ const MyApplications = () => {
     };
 
     fetchApplications();
-  }, []);
+  }, [user]);
 
   
 
@@ -68,6 +68,24 @@ const MyApplications = () => {
   useEffect(() => {
     if (!user) return;
   })
+
+  const updateApplicationStatus = async (id, status) => {
+    try {
+      const res = await axios.patch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/application/status/${id}`,
+        { status },
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      setApplications((prev) =>
+        prev.map((app) =>
+          app._id === id ? { ...app, status: res.data.application.status } : app
+        )
+      );
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update status");
+    }
+  };
 
   return (
     <section className="my_applications page">
@@ -100,6 +118,7 @@ const MyApplications = () => {
                 key={element._id}
                 element={element}
                 openModal={openModal}
+                updateApplicationStatus={updateApplicationStatus}
               />
             ))
           )}
@@ -125,6 +144,7 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
         <p><span>Phone:</span> {element.phone}</p>
         <p><span>Address:</span> {element.address}</p>
         <p><span>CoverLetter:</span> {element.coverLetter}</p>
+        <p><span>Status:</span> {element.status || "Pending"}</p>
       </div>
 
       <div className="resume">
@@ -143,7 +163,7 @@ const JobSeekerCard = ({ element, deleteApplication, openModal }) => {
 };
 
 // ---------------- Employer Card ----------------
-const EmployerCard = ({ element, openModal }) => {
+const EmployerCard = ({ element, openModal, updateApplicationStatus }) => {
   return (
     <div className="job_seeker_card">
       <div className="detail">
@@ -152,12 +172,31 @@ const EmployerCard = ({ element, openModal }) => {
         <p><span>Phone:</span> {element.phone}</p>
         <p><span>Address:</span> {element.address}</p>
         <p><span>CoverLetter:</span> {element.coverLetter}</p>
+        <p><span>Status:</span> {element.status || "Pending"}</p>
       </div>
 
       <div className="resume">
         <button onClick={() => openModal(element.resume.url)}>
           View Resume
         </button>
+      </div>
+
+      <div className="btn_area">
+        {(!element.status || element.status === "Pending") && (
+          <>
+            <button
+              onClick={() => updateApplicationStatus(element._id, "Accepted")}
+            >
+              Accept
+            </button>
+            <button
+              onClick={() => updateApplicationStatus(element._id, "Rejected")}
+              style={{ marginLeft: "8px" }}
+            >
+              Reject
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
