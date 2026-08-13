@@ -1,0 +1,31 @@
+.job-detail-page { min-height: calc(100vh - 64px); padding: 2rem 0; }
+.job-detail-layout { display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem; align-items: start; }
+.job-detail-main { display: flex; flex-direction: column; }
+.job-detail-sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; }
+
+.job-detail-header { }
+.jd-header-top { display: flex; gap: 1.25rem; align-items: flex-start; margin-bottom: 1rem; }
+.jd-company-logo { width: 64px; height: 64px; background: var(--gradient-primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; color: white; flex-shrink: 0; }
+.jd-title-area h1 { font-size: 1.5rem; }
+.jd-company-name { color: var(--text-secondary); font-size: 1rem; margin-top: 0.25rem; }
+.jd-quick-info { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-muted); }
+.jd-quick-info span { display: flex; align-items: center; gap: 0.3rem; }
+.jd-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.detail-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+.detail-list li { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+.detail-list li::before { content: '→'; color: var(--primary-light); flex-shrink: 0; margin-top: 1px; }
+
+.overview-items { display: flex; flex-direction: column; gap: 0.75rem; }
+.overview-item { display: flex; align-items: center; gap: 0.75rem; }
+.overview-icon { font-size: 1.2rem; width: 28px; text-align: center; flex-shrink: 0; }
+.overview-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+.overview-value { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+
+.recruiter-info { display: flex; align-items: center; gap: 0.75rem; }
+.recruiter-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; color: white; flex-shrink: 0; }
+
+@media (max-width: 900px) {
+  .job-detail-layout { grid-template-columns: 1fr; }
+  .job-detail-sidebar { position: static; }
+}

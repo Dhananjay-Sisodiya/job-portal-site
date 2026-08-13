@@ -1,0 +1,13 @@
+{
+  "name": "job-ai-powder",
+  "version": "1.0.0",
+  "description": "AI-powered MERN Job Portal with Gemini AI",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "start:backend": "cd backend && npm start"
+  },
+  "author": "Job AI Powder",
+  "license": "ISC"
+}

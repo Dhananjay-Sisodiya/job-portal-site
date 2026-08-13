@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-08-13T10:54:56.359Z",
+  "results": {
+    "Landing Page": "✅ PASS",
+    "Recruiter Signup": "✅ PASS",
+    "Post Job + AI JD": "✅ PASS (JD: 1260 chars)",
+    "Avatar Dropdown": "✅ PASS",
+    "Recruiter Logout": "✅ PASS",
+    "Seeker Signup": "✅ PASS",
+    "Resume Upload": "✅ PASS",
+    "Browse Jobs + Detail": "✅ PASS",
+    "Apply for Job": "✅ PASS",
+    "AI Analysis": "✅ PASS — Score: 49/100 | Matched: 9 | Missing: 8",
+    "Seeker Logout + Login": "✅ PASS",
+    "Profile Page": "✅ PASS",
+    "Recruiter → View + Accept": "✅ PASS"
+  },
+  "consoleErrors": [],
+  "pct": 100,
+  "passes": 13,
+  "warns": 0,
+  "fails": 0,
+  "total": 13
+}

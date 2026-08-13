@@ -1,0 +1,66 @@
+.navbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(99,102,241,0.1);
+  padding: 0.75rem 0;
+}
+.navbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+
+.navbar-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+.logo-icon { width: 36px; height: 36px; background: var(--gradient-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; box-shadow: 0 0 20px rgba(99,102,241,0.35); }
+.logo-text { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text-primary); }
+.logo-accent { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.navbar-links { display: flex; align-items: center; gap: 1.5rem; }
+.nav-link { color: var(--text-secondary); font-weight: 500; font-size: 0.95rem; transition: var(--transition); padding: 0.3rem 0; border-bottom: 2px solid transparent; }
+.nav-link:hover, .nav-link.active { color: var(--text-primary); border-bottom-color: var(--primary); }
+
+.navbar-auth { display: flex; align-items: center; gap: 0.75rem; }
+
+/* User Dropdown */
+.user-dropdown { position: relative; isolation: isolate; }
+.user-avatar-btn { display: flex; align-items: center; gap: 0.75rem; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 0.5rem 1rem; cursor: pointer; transition: var(--transition); }
+.user-avatar-btn:hover { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.4); }
+.user-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; color: white; flex-shrink: 0; box-shadow: 0 0 12px rgba(99,102,241,0.4); }
+.user-info-mini { display: flex; flex-direction: column; align-items: flex-start; }
+.user-name-mini { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); line-height: 1; }
+.role-badge { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
+.role-badge.recruiter { color: #fbbf24; }
+.role-badge.jobseeker { color: #34d399; }
+.dropdown-arrow { color: var(--text-muted); font-size: 0.75rem; transition: transform 0.2s ease; }
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: #1a1a2e;
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: var(--radius-md);
+  padding: 0.5rem;
+  min-width: 200px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.1);
+  animation: fadeInUp 0.18s ease;
+  z-index: 9999;
+}
+.dropdown-item { display: flex; align-items: center; width: 100%; text-align: left; padding: 0.65rem 0.9rem; border-radius: 8px; font-size: 0.875rem; color: var(--text-secondary); background: none; border: none; cursor: pointer; transition: var(--transition); text-decoration: none; gap: 0.5rem; }
+.dropdown-item:hover { background: rgba(99,102,241,0.12); color: var(--text-primary); }
+.dropdown-item.danger { color: #f87171; }
+.dropdown-item.danger:hover { background: rgba(239,68,68,0.12); color: #fca5a5; }
+.dropdown-divider { height: 1px; background: var(--border-subtle); margin: 0.4rem 0; }
+
+/* Mobile */
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--text-secondary); border-radius: 2px; transition: var(--transition); }
+.mobile-menu { background: var(--bg-secondary); border-top: 1px solid var(--border-subtle); padding: 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.mobile-link { display: block; padding: 0.75rem 1rem; color: var(--text-secondary); font-weight: 500; border-radius: var(--radius-sm); transition: var(--transition); background: none; border: none; cursor: pointer; text-decoration: none; font-size: 0.95rem; text-align: left; }
+.mobile-link:hover { background: rgba(99,102,241,0.1); color: var(--text-primary); }
+.mobile-link.danger:hover { color: #f87171; }
+
+@media (max-width: 768px) {
+  .navbar-links { display: none; }
+  .hamburger { display: flex; }
+  .user-info-mini { display: none; }
+  .dropdown-arrow { display: none; }
+}
